@@ -1,0 +1,10 @@
+server:
+  port: 8999
+
+spring:
+  application:
+    name: unique-id
+
+id:
+  machineRoomId: 1
+  machineId: 1
