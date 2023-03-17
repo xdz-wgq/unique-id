@@ -1,7 +1,7 @@
 package com.xdz.uniqueid.controller;
 
 import com.xdz.uniqueid.config.ServiceEnum;
-import com.xdz.uniqueid.service.IdWorker;
+import com.xdz.uniqueid.service.snowflake.SnowflakeService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,16 +20,16 @@ import java.util.stream.Collectors;
 public class UniqueIdController {
 
     @Resource
-    private IdWorker idWorker;
+    private SnowflakeService snowflakeService;
 
     @RequestMapping("getId")
     public String getId(String serviceName) {
-        return getPrefix(serviceName) + idWorker.getId();
+        return getPrefix(serviceName) + snowflakeService.getId();
     }
 
     @RequestMapping("getIds")
     public List<String> getIds(String serviceName, int size) {
-        return idWorker.getIds(size).stream().map(id -> getPrefix(serviceName) + id).collect(Collectors.toList());
+        return snowflakeService.getIds(size).stream().map(id -> getPrefix(serviceName) + id).collect(Collectors.toList());
     }
 
     /**

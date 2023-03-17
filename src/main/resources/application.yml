@@ -4,7 +4,20 @@ server:
 spring:
   application:
     name: unique-id
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://www.wgq.com:3306/unique_id?useUnicode=true&characterEncoding=utf-8&serverTimezone=GMT%2B8
+    username: root
+    password: root
 
-id:
+snowflake:
   machineRoomId: 1
   machineId: 1
+
+leaf:
+  snowflake:
+    zk-connect-str: www.wgq.com:2181
+    zk-session-timeout: 3000
+  segment:
+    segment-size: 10000
+

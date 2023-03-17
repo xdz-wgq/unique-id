@@ -1,4 +1,4 @@
-package com.xdz.uniqueid.config;
+package com.xdz.uniqueid.service.snowflake;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -8,8 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2023/3/10 15:07
  * @version 1.0.0
  */
-@ConfigurationProperties("id")
-public class IdProperties {
+@ConfigurationProperties("snowflake")
+public class SnowflakeProperties {
     /**
      * 机房ID
      */

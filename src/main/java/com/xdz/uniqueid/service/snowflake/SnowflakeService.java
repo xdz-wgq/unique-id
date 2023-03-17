@@ -1,4 +1,4 @@
-package com.xdz.uniqueid.service;
+package com.xdz.uniqueid.service.snowflake;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -11,7 +11,7 @@ import java.util.stream.IntStream;
  * @date 2023/3/10 14:32
  * @version 1.0.0
  **/
-public class IdWorker {
+public class SnowflakeService {
 
     /**
      * 序号占用bit位
@@ -44,6 +44,21 @@ public class IdWorker {
     private final static int TIME_BIT_LEFT_BITS = MACHINE_ROOM_ID_LEFT_BITS + MACHINE_ROOM_ID_BITS;
 
     /**
+     * 最大机房ID
+     */
+    private final static int MAX_MACHINE_ROOM_ID = 1 << MACHINE_ROOM_ID_BITS - 1;
+
+    /**
+     * 最大机器ID
+     */
+    private final static int MAX_MACHINE_ID = 1 << MACHINE_ID_BITS - 1;
+
+    /**
+     * 最大的序列号
+     */
+    private final static int MAX_SEQUENCE_NO = 1 << SEQUENCE_NO_BITS - 1;
+
+    /**
      * 起始的时间戳：2023-03-10 13:49:38
      * 从起始时间开始，时间戳的位数可以用2^41-1，也就是大概69年
      */
@@ -69,21 +84,6 @@ public class IdWorker {
      */
     private int sequenceNo = -1;
 
-    /**
-     * 最大机房ID
-     */
-    private final static int MAX_MACHINE_ROOM_ID = 1 << MACHINE_ROOM_ID_BITS - 1;
-
-    /**
-     * 最大机器ID
-     */
-    private final static int MAX_MACHINE_ID = 1 << MACHINE_ID_BITS - 1;
-
-    /**
-     * 最大的序列号
-     */
-    private final static int MAX_SEQUENCE_NO = 1 << SEQUENCE_NO_BITS - 1;
-
 
     /**
      * 根据机房ID和机器ID来保证分布式下唯一
@@ -92,12 +92,12 @@ public class IdWorker {
      * @author wgq
      * @date 2023/3/10 13:46
      **/
-    public IdWorker(long machineRoomId, long machineId) {
-        if (machineRoomId > MAX_MACHINE_ROOM_ID) {
-            throw new RuntimeException("机房ID设置超过最大值");
+    public SnowflakeService(long machineRoomId, long machineId) {
+        if (machineRoomId < 0 || machineRoomId > MAX_MACHINE_ROOM_ID) {
+            throw new RuntimeException("机房ID设置超过最大值" + machineRoomId);
         }
-        if (machineId > MAX_MACHINE_ID) {
-            throw new RuntimeException("机器ID设置超过最大值");
+        if (machineId < 0 || machineId > MAX_MACHINE_ID) {
+            throw new RuntimeException("机器ID设置超过最大值" + machineId);
         }
         this.machineRoomId = machineRoomId;
         this.machineId = machineId;
